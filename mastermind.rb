@@ -1,6 +1,7 @@
 require 'pry'
 
 
+
 class String
   # colorization
   def colorize(color_code)
@@ -10,6 +11,7 @@ class String
   #Result Colors
   def black ;   colorize(40)  end
   def reverse_color ; "\e[7m#{self}\e[27m"  end
+  def gray ; colorize (47) end
 
   #Game Colors
   def red  ;   colorize(41)  end
@@ -107,25 +109,57 @@ def askPlays (playNum, board)
     elsif p == "\e[46m cyan \e[0m"
       print  " cyan ".cyan
     end
-    #binding.pry
+    
   end
-  comparing(player)
+  comparing(player, playNum, board)
 end
-   
-def computerPlays 
-  array = Array.new(4) { rand(1..6)}
+
+
+def computerPlays ()
+
+  array = Array.new(4) { rand(1..6) }
   return array
 end
 
-
-
-def comparing(player)
+$count = 0
+$safe = 1
+def comparing(player, playNum, board)
   print "...this is your guess\nand this is the result:"
-  com = computerPlays()
+    
+    if $safe == 1
+      com1 = computerPlays()
+    end
+    $safe += 1
 
-  puts "solo falta code la comprarciona, player jugo #{player} y computer #{com}"
+    unless com1 == nil
+    $com = com1 
+    end 
 
-  
+    #binding.pry
+
+  print "solo falta code la comprarciona, player jugo #{player} y computer #{$com}"
+
+  player.each_with_index do |p, i| 
+    if $com[i] == p 
+      print "black ".black
+      
+    elsif $com.include? p 
+      print "white ".reverse_color
+    
+    else 
+      print " gray ".gray
+    end
+
+  end
+  $count += 1
+  if $count < 12
+    askPlays(playNum, board)
+  else 
+    puts "Ran out of chances. Game Over"
+    
+    exit
+  end
+
 end
 
 

@@ -1,5 +1,3 @@
-require 'pry'
-
 
 
 class String
@@ -121,6 +119,7 @@ def computerPlays ()
   return array
 end
 
+$win = 0
 $count = 0
 $safe = 1
 def comparing(player, playNum, board)
@@ -135,24 +134,33 @@ def comparing(player, playNum, board)
     $com = com1 
     end 
 
-    #binding.pry
+   
 
-  print "solo falta code la comprarciona, player jugo #{player} y computer #{$com}"
+
 
   player.each_with_index do |p, i| 
     if $com[i] == p 
       print "black ".black
+      $win += 1
+        if $win == 4
+          puts "YOU CRACKED THE CODE!!!"
+          exit
+        end 
+
       
     elsif $com.include? p 
       print "white ".reverse_color
-    
+      $win = 0
     else 
       print " gray ".gray
+      $win = 0
+      
     end
 
   end
   $count += 1
   if $count < 12
+    puts "Let's try again, #{12-$count} chances remaining"
     askPlays(playNum, board)
   else 
     puts "Ran out of chances. Game Over"
